@@ -4,7 +4,7 @@ requires = [
     "setuptools_scm>=8",
     "cython>=0.29.16",
     "cmake",
-    "numpy>=1.25.0",
+    "numpy>=2.0",
 ]
 build-backend = "setuptools.build_meta"
 
@@ -41,7 +41,7 @@ classifiers = [
 urls.Homepage = "https://github.com/LemonDoubleHQ/lemon-pyopenjtalk-prebuilt"
 urls.Source = "https://github.com/r9y9/pyopenjtalk"
 dependencies = [
-    "numpy>=1.20.0",
+    "numpy>=1.25.0",
     "tqdm",
 ]
 
