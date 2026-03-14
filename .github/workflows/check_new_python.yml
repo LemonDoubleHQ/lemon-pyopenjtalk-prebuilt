@@ -1,0 +1,108 @@
+name: Check for new Python versions
+
+on:
+  schedule:
+    - cron: "0 0 1 * *" # 매월 1일 00:00 UTC
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Detect new Python versions
+        id: detect
+        run: |
+          python3 - <<'EOF'
+          import json, re, subprocess, sys
+          from datetime import date
+          from urllib.request import urlopen
+
+          # 1. endoflife.date에서 현재 지원 중인 Python 3.x 버전 조회
+          with urlopen("https://endoflife.date/api/python.json") as resp:
+              data = json.loads(resp.read())
+
+          today = date.today().isoformat()
+          active_versions = sorted(
+              v["cycle"] for v in data
+              if v["cycle"].startswith("3.") and v["eol"] > today
+          )
+          print(f"Active Python versions from endoflife.date: {active_versions}")
+
+          # 2. pyproject.toml에서 현재 빌드 대상 버전 파싱
+          with open("pyproject.toml") as f:
+              content = f.read()
+
+          match = re.search(r'^build\s*=\s*"(.*)"', content, re.MULTILINE)
+          if not match:
+              print("ERROR: cibuildwheel build config not found", file=sys.stderr)
+              sys.exit(1)
+
+          current_tags = match.group(1).split()
+          # "cp310-*" → "3.10" 형태로 변환
+          current_versions = set()
+          for tag in current_tags:
+              m = re.match(r"cp(\d)(\d+)-\*", tag)
+              if m:
+                  current_versions.add(f"{m.group(1)}.{m.group(2)}")
+
+          print(f"Currently built versions: {sorted(current_versions)}")
+
+          # 3. 새 버전 탐지
+          new_versions = [v for v in active_versions if v not in current_versions]
+          print(f"New versions to add: {new_versions}")
+
+          if not new_versions:
+              print("No new Python versions found.")
+              with open("$GITHUB_OUTPUT", "a") as f:
+                  f.write("new_versions_found=false\n")
+              sys.exit(0)
+
+          # 4. pyproject.toml 업데이트
+          new_tags = [f"cp{v.replace('.', '')}-*" for v in new_versions]
+          all_tags = sorted(set(current_tags) | set(new_tags))
+          new_build_line = f'build = "{" ".join(all_tags)}"'
+
+          updated = re.sub(
+              r'^build\s*=\s*".*"',
+              new_build_line,
+              content,
+              flags=re.MULTILINE,
+          )
+          with open("pyproject.toml", "w") as f:
+              f.write(updated)
+
+          print(f"Updated build line: {new_build_line}")
+
+          # 5. GitHub Actions output 설정
+          with open("$GITHUB_OUTPUT", "a") as f:
+              f.write("new_versions_found=true\n")
+              f.write(f"new_versions={', '.join(new_versions)}\n")
+          EOF
+
+      - name: Create Pull Request
+        if: steps.detect.outputs.new_versions_found == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: "chore: add Python ${{ steps.detect.outputs.new_versions }} to build targets"
+          title: "chore: add Python ${{ steps.detect.outputs.new_versions }} support"
+          body: |
+            ## 새 Python 버전 감지 🐍
+
+            월간 자동 체크에서 새 Python 버전이 감지되었습니다.
+
+            **추가된 버전:** `${{ steps.detect.outputs.new_versions }}`
+
+            ### 체크리스트
+            - [ ] 빌드가 정상적으로 완료되는지 확인
+            - [ ] 새 버전에서 pyopenjtalk 동작 테스트
+            - [ ] 머지 후 새 태그 푸시하여 PyPI 배포
+
+            > 이 PR은 [endoflife.date](https://endoflife.date/python) 기준으로 자동 생성되었습니다.
+          branch: "chore/add-python-${{ steps.detect.outputs.new_versions }}"
+          delete-branch: true
