@@ -22,7 +22,7 @@ jobs:
           fetch-depth: 0 # setuptools_scm이 git 히스토리로 버전 결정
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v3
+        uses: pypa/cibuildwheel@v3.4.0
         env:
           CIBW_BUILD_VERBOSITY: 1
 
