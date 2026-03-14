@@ -3,6 +3,10 @@
 [![PyPI](https://img.shields.io/pypi/v/lemon-pyopenjtalk-prebuilt.svg)](https://pypi.python.org/pypi/lemon-pyopenjtalk-prebuilt)
 [![License](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](LICENSE.md)
 
+**언어 / Language:** 한국어 | [English](README.en.md) | [日本語](README.ja.md) | [中文](README.zh.md)
+
+---
+
 [pyopenjtalk](https://github.com/r9y9/pyopenjtalk)의 사전 빌드(prebuilt) 바이너리 wheel 패키지입니다.
 pyopenjtalk는 일본어 TTS 엔진 [OpenJTalk](http://open-jtalk.sp.nitech.ac.jp/)의 Python 래퍼입니다.
 
@@ -44,6 +48,34 @@ pyopenjtalk.g2p("こんにちは", kana=True) # → 'コンニチワ'
 | Windows | AMD64          | 3.10 ~ 최신    |
 
 새로운 Python 버전은 매월 자동으로 감지되어 PR로 추가됩니다.
+
+## CI/CD 워크플로우
+
+### Build and Release Wheels (`build_and_release.yml`)
+
+버전 태그(`v*`) 푸시 또는 수동 실행 시 동작합니다.
+
+| 단계 | 설명 |
+|------|------|
+| **Build wheels** | Ubuntu, macOS (Intel/Apple Silicon), Windows에서 cibuildwheel로 각 플랫폼 wheel 빌드 |
+| **Build sdist** | 소스 배포판(`.tar.gz`) 빌드 |
+| **Publish** | 태그 푸시 시 PyPI에 OIDC Trusted Publisher 방식으로 자동 배포 |
+
+빌드 환경:
+
+| 플랫폼 | 환경 | 비고 |
+|--------|------|------|
+| Linux | manylinux_2_28 (x86_64) | glibc 2.28 기반 컨테이너 |
+| macOS 13 | Intel x86_64 네이티브 빌드 | |
+| macOS 14 | Apple Silicon arm64 네이티브 빌드 | |
+| Windows | AMD64 | |
+
+### Check for new Python versions (`check_new_python.yml`)
+
+매월 1일 자동 실행되며, 수동 실행도 가능합니다.
+
+[endoflife.date](https://endoflife.date/python)에서 현재 지원 중인 Python 버전을 조회하여,
+`pyproject.toml`의 빌드 대상에 빠진 버전이 있으면 자동으로 PR을 생성합니다.
 
 ## 만든 이유
 
