@@ -41,11 +41,10 @@ pyopenjtalk.g2p("こんにちは", kana=True) # → 'コンニチワ'
 
 ## 지원 플랫폼
 
-| 플랫폼  | 아키텍처        | Python 버전    |
-|---------|----------------|----------------|
-| Linux   | x86_64         | 3.10 ~ 최신    |
-| macOS   | x86_64, arm64  | 3.10 ~ 최신    |
-| Windows | AMD64          | 3.10 ~ 최신    |
+| 플랫폼  | 아키텍처 | Python 버전 |
+|---------|---------|------------|
+| Linux   | x86_64  | 3.10 ~ 최신 |
+| Windows | AMD64   | 3.10 ~ 최신 |
 
 새로운 Python 버전은 매월 자동으로 감지되어 PR로 추가됩니다.
 
@@ -66,7 +65,6 @@ pyopenjtalk.g2p("こんにちは", kana=True) # → 'コンニチワ'
 | 플랫폼 | 환경 | 비고 |
 |--------|------|------|
 | Linux | manylinux_2_28 (x86_64) | glibc 2.28 기반 컨테이너 |
-| macOS 14 | x86_64, arm64 | arm64 러너에서 x86_64 크로스컴파일 |
 | Windows | AMD64 | |
 
 ### Check for new Python versions (`check_new_python.yml`)

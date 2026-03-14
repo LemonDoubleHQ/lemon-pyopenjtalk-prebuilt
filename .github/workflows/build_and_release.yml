@@ -13,8 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-14, windows-latest]
-        # macos-14 = Apple Silicon arm64, x86_64은 cibuildwheel 크로스컴파일로 처리
+        os: [ubuntu-latest, windows-latest]
 
     steps:
       - uses: actions/checkout@v4

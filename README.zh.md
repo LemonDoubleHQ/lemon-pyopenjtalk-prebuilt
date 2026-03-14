@@ -41,11 +41,10 @@ pyopenjtalk.g2p("こんにちは", kana=True) # → 'コンニチワ'
 
 ## 支持平台
 
-| 平台    | 架构           | Python 版本 |
-|---------|---------------|-------------|
-| Linux   | x86_64        | 3.10+       |
-| macOS   | x86_64, arm64 | 3.10+       |
-| Windows | AMD64         | 3.10+       |
+| 平台    | 架构    | Python 版本 |
+|---------|--------|-------------|
+| Linux   | x86_64 | 3.10+       |
+| Windows | AMD64  | 3.10+       |
 
 每月自动检测新 Python 版本并通过 Pull Request 添加。
 
@@ -66,7 +65,6 @@ pyopenjtalk.g2p("こんにちは", kana=True) # → 'コンニチワ'
 | 平台 | 环境 | 备注 |
 |------|------|------|
 | Linux | manylinux_2_28 (x86_64) | 基于 glibc 2.28 的容器 |
-| macOS 14 | x86_64, arm64 | 在 arm64 runner 上交叉编译 x86_64 |
 | Windows | AMD64 | |
 
 ### Check for new Python versions (`check_new_python.yml`)

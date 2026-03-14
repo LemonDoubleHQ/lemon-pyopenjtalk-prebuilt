@@ -41,11 +41,10 @@ For more details, see the [original pyopenjtalk README](https://github.com/r9y9/
 
 ## Supported Platforms
 
-| Platform | Architecture   | Python Version |
-|----------|----------------|----------------|
-| Linux    | x86_64         | 3.10+          |
-| macOS    | x86_64, arm64  | 3.10+          |
-| Windows  | AMD64          | 3.10+          |
+| Platform | Architecture | Python Version |
+|----------|-------------|----------------|
+| Linux    | x86_64      | 3.10+          |
+| Windows  | AMD64       | 3.10+          |
 
 New Python versions are automatically detected monthly and added via pull request.
 
@@ -66,7 +65,6 @@ Build environments:
 | Platform | Environment | Notes |
 |----------|-------------|-------|
 | Linux | manylinux_2_28 (x86_64) | glibc 2.28 based container |
-| macOS 14 | x86_64, arm64 | x86_64 cross-compiled on arm64 runner |
 | Windows | AMD64 | |
 
 ### Check for new Python versions (`check_new_python.yml`)
