@@ -13,8 +13,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-13, macos-14, windows-latest]
-        # macos-13 = Intel x86_64 / macos-14 = Apple Silicon arm64 (native 빌드)
+        os: [ubuntu-latest, macos-14, windows-latest]
+        # macos-14 = Apple Silicon arm64, x86_64은 cibuildwheel 크로스컴파일로 처리
 
     steps:
       - uses: actions/checkout@v4
@@ -23,7 +23,7 @@ jobs:
           fetch-depth: 0 # setuptools_scm이 git 히스토리로 버전 결정
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2
+        uses: pypa/cibuildwheel@v3
         env:
           CIBW_BUILD_VERBOSITY: 1
 

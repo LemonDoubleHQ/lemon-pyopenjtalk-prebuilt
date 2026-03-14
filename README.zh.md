@@ -66,8 +66,7 @@ pyopenjtalk.g2p("こんにちは", kana=True) # → 'コンニチワ'
 | 平台 | 环境 | 备注 |
 |------|------|------|
 | Linux | manylinux_2_28 (x86_64) | 基于 glibc 2.28 的容器 |
-| macOS 13 | Intel x86_64 原生构建 | |
-| macOS 14 | Apple Silicon arm64 原生构建 | |
+| macOS 14 | x86_64, arm64 | 在 arm64 runner 上交叉编译 x86_64 |
 | Windows | AMD64 | |
 
 ### Check for new Python versions (`check_new_python.yml`)

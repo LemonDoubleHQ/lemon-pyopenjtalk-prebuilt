@@ -66,8 +66,7 @@ Build environments:
 | Platform | Environment | Notes |
 |----------|-------------|-------|
 | Linux | manylinux_2_28 (x86_64) | glibc 2.28 based container |
-| macOS 13 | Native Intel x86_64 build | |
-| macOS 14 | Native Apple Silicon arm64 build | |
+| macOS 14 | x86_64, arm64 | x86_64 cross-compiled on arm64 runner |
 | Windows | AMD64 | |
 
 ### Check for new Python versions (`check_new_python.yml`)
